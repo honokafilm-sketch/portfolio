@@ -306,10 +306,10 @@ opacity: 0;
     serif;
 }
   font-size: clamp(32px, 5vw, 56px);
-  letter-spacing: 0.35em;
+  letter-spacing: 0.45em;
   font-weight: 500;
   color: rgba(255,255,255,0.9);
-  text-shadow: 0 8px 32px rgba(0,0,0,0.45);
+  text-shadow: 0 10px 40px rgba(0,0,0,0.5);
   font-family:
     "Helvetica Neue",
     "Avenir",
