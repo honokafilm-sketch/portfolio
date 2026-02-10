@@ -305,7 +305,7 @@ opacity: 0;
     "Times New Roman",
     serif;
 }
-  font-size: clamp(48px, 5vw, 56px);
+  font-size: clamp(70px, 5vw, 56px);
   letter-spacing: 0.45em;
   font-weight: 500;
   color: rgba(255,255,255,0.9);
