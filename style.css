@@ -274,3 +274,28 @@ body::before{
 
 /* Worksは前面 */
 .works{ z-index: 2; }
+/* ===== Hero Title (HONOKA text only) ===== */
+.hero{
+  position: fixed;
+  top: 18%;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 2;              /* 背景動画の上 / worksと同階層 */
+  pointer-events: none;    /* クリック邪魔しない */
+  text-align: center;
+}
+
+.hero__title{
+  font-size: clamp(32px, 5vw, 56px);
+  letter-spacing: 0.35em;
+  font-weight: 500;
+  color: rgba(255,255,255,0.9);
+  text-shadow: 0 8px 32px rgba(0,0,0,0.45);
+  font-family:
+    "Helvetica Neue",
+    "Avenir",
+    "Hiragino Sans",
+    "Noto Sans JP",
+    system-ui,
+    sans-serif;
+}
