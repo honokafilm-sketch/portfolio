@@ -277,15 +277,34 @@ body::before{
 /* ===== Hero Title (HONOKA text only) ===== */
 .hero{
   position: fixed;
-  top: 18%;
+  top: 10%;
   left: 50%;
   transform: translateX(-50%);
   z-index: 2;              /* 背景動画の上 / worksと同階層 */
   pointer-events: none;    /* クリック邪魔しない */
   text-align: center;
 }
+opacity: 0;
+  animation: heroFadeIn 1.2s ease-out forwards;
+  animation-delay: 2s;   /* ← 2秒後に出る */
+}
 
+@keyframes heroFadeIn{
+  from{
+    opacity: 0;
+    transform: translate(-50%, -8px);
+  }
+  to{
+    opacity: 1;
+    transform: translate(-50%, 0);
+  }
+}
 .hero__title{
+  font-family:
+    "Cormorant Garamond",
+    "Times New Roman",
+    serif;
+}
   font-size: clamp(32px, 5vw, 56px);
   letter-spacing: 0.35em;
   font-weight: 500;
