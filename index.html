@@ -11,17 +11,92 @@
 <video autoplay muted loop playsinline>
   <source src="bg.mp4" type="video/mp4">
 </video>
-  <div class="featured">
-    <div class="featured__frame">
-      <iframe
-        src="https://www.youtube.com/embed/VoSRpIq9qv8"
-        title="Featured work"
-        frameborder="0"
-        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-        allowfullscreen>
-      </iframe>
-    </div>
+<!-- Works thumbs -->
+<div class="works">
+  <div class="works__label">WORKS</div>
+  <div class="works__grid" id="worksGrid"></div>
+</div>
+
+<!-- Modal -->
+<div class="modal" id="playerModal" aria-hidden="true">
+  <div class="modal__backdrop" data-close></div>
+  <div class="modal__panel" role="dialog" aria-modal="true" aria-label="Video player">
+    <button class="modal__close" data-close aria-label="Close">×</button>
+    <div class="modal__frame" id="playerFrame"></div>
   </div>
+</div>
+
+<script>
+  const WORKS = [
+    { id: "VoSRpIq9qv8" },
+    { id: "uQQxOeu6gHI" },
+    { id: "LFGNmOdYubg" },
+    { id: "sOj1vXpvZwA" },
+    { id: "9jJOygCUbsE", start: 8 },
+    { id: "XKOw60Hr_hw" },
+    { id: "n8CYxe93iMA" },
+    { id: "kMRS5hkl6WE" },
+  ];
+
+  const grid = document.getElementById("worksGrid");
+  const modal = document.getElementById("playerModal");
+  const frame = document.getElementById("playerFrame");
+
+  function openModal(videoId, startSeconds = 0) {
+    const startParam = startSeconds ? `&start=${startSeconds}` : "";
+    frame.innerHTML = `
+      <iframe
+        src="https://www.youtube-nocookie.com/embed/${videoId}?autoplay=1&rel=0${startParam}"
+        frameborder="0"
+        allow="autoplay; encrypted-media; picture-in-picture"
+        allowfullscreen></iframe>
+    `;
+    modal.classList.add("isOpen");
+    document.body.classList.add("noScroll");
+  }
+
+  function closeModal() {
+    modal.classList.remove("isOpen");
+    frame.innerHTML = "";
+    document.body.classList.remove("noScroll");
+  }
+
+  async function fetchTitle(videoId) {
+    try {
+      const res = await fetch(
+        `https://www.youtube.com/oembed?url=https://www.youtube.com/watch?v=${videoId}&format=json`
+      );
+      const data = await res.json();
+      return data.title;
+    } catch {
+      return "YouTube Video";
+    }
+  }
+
+  WORKS.forEach(async (w) => {
+    const btn = document.createElement("button");
+    btn.className = "workCard";
+    btn.innerHTML = `
+      <div class="workCard__media">
+        <img src="https://i.ytimg.com/vi/${w.id}/hqdefault.jpg">
+        <div class="workCard__play">▶</div>
+      </div>
+      <div class="workCard__meta">
+        <div class="workCard__title" id="t-${w.id}">Loading...</div>
+      </div>
+    `;
+    btn.onclick = () => openModal(w.id, w.start || 0);
+    grid.appendChild(btn);
+
+    const title = await fetchTitle(w.id);
+    document.getElementById(`t-${w.id}`).textContent = title;
+  });
+
+  modal.addEventListener("click", e => {
+    if (e.target.dataset.close !== undefined) closeModal();
+  });
+</script>
+
 
 </body>
 </html>
