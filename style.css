@@ -89,3 +89,4 @@ html, body {
 .work .work__thumb{
   transition: transform 160ms ease, box-shadow 160ms ease;
 }
+video { display:none !important; }
