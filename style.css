@@ -108,7 +108,6 @@ body::before{
 .work .work__thumb{
   transition: transform 160ms ease, box-shadow 160ms ease;
 }
-video { display:none !important; }
 /* ===== Works UI (match current index.html) ===== */
 
 .works{
