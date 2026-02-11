@@ -277,18 +277,17 @@ body::before{
 /* ===== Hero Title (HONOKA text only) ===== */
 .hero{
   position: fixed;
-  top: 20%;
+  top: 22%;              /* ← もう少し下げたいならここ調整 */
   left: 50%;
   transform: translateX(-50%);
-  z-index: 2;              /* 背景動画の上 / worksと同階層 */
-  pointer-events: none;    /* クリック邪魔しない */
+  z-index: 2;
+  pointer-events: none;
   text-align: center;
-}
-opacity: 0;
-  animation: heroFadeIn 1.2s ease-out forwards;
-  animation-delay: 2s;   /* ← 2秒後に出る */
-}
 
+  opacity: 0;
+  animation: heroFadeIn 1.2s ease-out forwards;
+  animation-delay: 2s;
+}
 @keyframes heroFadeIn{
   from{
     opacity: 0;
@@ -305,7 +304,7 @@ opacity: 0;
     "Times New Roman",
     serif;
 }
-  font-size: clamp(72px, 10vw, 140px);
+  font-size: min(22vw, 220px);
   letter-spacing: 0.45em;
   font-weight: 500;
   color: rgba(255,255,255,0.9);
@@ -320,17 +319,20 @@ opacity: 0;
 }
 /* スマホ：WORKS枠をスクロール可能にする */
 @media (max-width: 520px){
+
   .works{
-    top: 16vh;                 /* 上に少し余白（HONOKA分） */
-    transform: translateX(-50%); /* 縦の中央寄せはやめる */
-    max-height: calc(100vh - 20vh);
-    overflow-y: auto;
-    -webkit-overflow-scrolling: touch;
-    padding-bottom: 24px;
+    position: relative;   /* ← fixedやめる */
+    top: auto;
+    left: auto;
+    transform: none;
+
+    width: 92vw;
+    margin: 120px auto 80px;
   }
 
-  .works__grid{
-    grid-template-columns: repeat(2, 1fr); /* 2列に */
-    gap: 12px;
+  body{
+    overflow-y: auto;
   }
+
 }
+
