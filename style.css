@@ -276,10 +276,11 @@ body::before{
 .works{ z-index: 2; }
 /* ===== Hero Title (HONOKA text only) ===== */
 .hero{
-  position: fixed;
-  top: 15%;              /* ← もう少し下げたいならここ調整 */
-  left: 50%;
-  transform: translateX(-50%);
+ position: relative !important;
+    left: auto !important;
+    top: auto !important;
+    transform: none !important;
+    margin: 24px auto 10px !important;
   z-index: 2;
   pointer-events: none;
   text-align: center;
@@ -338,26 +339,28 @@ body::before{
 
   /* ページ全体はスクロール可能に */
   html, body{
-    height: auto;
-    overflow-y: auto;
+    height: auto !important;
+    overflow-y: auto !important;
+    overflow-x: hidden !important;
+    -webkit-overflow-scrolling: touch;
   }
 
   /* WORKSを固定解除 */
   .works{
-    position: relative;     /* ← fixedをやめる */
-    top: auto;
-    left: auto;
-    transform: none;
+    position: relative !important;
+    left: auto !important;
+    top: auto !important;
+    transform: none !important;
 
-    margin: 140px auto 80px; /* 上に余白（HONOKA分） */
-    width: 92vw;
-    max-height: none;
-    overflow: visible;
+    width: min(92vw, 520px) !important;
+    margin: 140px auto 80px !important; /* 上に余白（HONOKA分） */
+    max-height: none !important;
+    overflow: visible !important;
   }
 
 .works__grid{
-    grid-template-columns: repeat(2, 1fr);
-    gap: 10px;
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 10px !important;
   }
 
 }
