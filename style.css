@@ -277,7 +277,7 @@ body::before{
 /* ===== Hero Title (HONOKA text only) ===== */
 .hero{
   position: fixed;
-  top: 20%;              /* ← もう少し下げたいならここ調整 */
+  top: 15%;              /* ← もう少し下げたいならここ調整 */
   left: 50%;
   transform: translateX(-50%);
   z-index: 2;
@@ -304,13 +304,17 @@ body::before{
     "Cormorant Garamond",
     "Times New Roman",
     serif;
-  font-size: min(45vw, 480px);
-  letter-spacing: 0.45em;
+  font-size: clamp(84px, 12vw, 210px);
+  letter-spacing: 0.16em;
   font-weight: 500;
   color: rgba(255,255,255,0.95);
   text-shadow:
   0 10px 30px rgba(0,0,0,0.65),
   0 2px 0 rgba(255,255,255,0.15);
+  line-height: 1;
+  white-space: nowrap;
+  transform: translateX(-0.08em);
+
 /* スマホ：WORKS枠をスクロール可能にする */
 @media (max-width: 520px){
 
