@@ -310,15 +310,6 @@ body::before{
   text-shadow:
   0 10px 30px rgba(0,0,0,0.65),
   0 2px 0 rgba(255,255,255,0.15);
-}
-  font-family:
-    "Helvetica Neue",
-    "Avenir",
-    "Hiragino Sans",
-    "Noto Sans JP",
-    system-ui,
-    sans-serif;
-}
 /* スマホ：WORKS枠をスクロール可能にする */
 @media (max-width: 520px){
 
