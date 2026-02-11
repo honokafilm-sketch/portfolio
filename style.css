@@ -304,7 +304,7 @@ body::before{
     "Times New Roman",
     serif;
 }
-  font-size: min(22vw, 220px);
+  font-size: min(35vw, 420px);
   letter-spacing: 0.45em;
   font-weight: 500;
   color: rgba(255,255,255,0.9);
