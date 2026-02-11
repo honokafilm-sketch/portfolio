@@ -335,4 +335,26 @@ body::before{
   }
 
 }
+/* ===== Mobile fix : allow scroll of works ===== */
+@media (max-width: 520px){
 
+  /* ページ全体はスクロール可能に */
+  html, body{
+    height: auto;
+    overflow-y: auto;
+  }
+
+  /* WORKSを固定解除 */
+  .works{
+    position: relative;     /* ← fixedをやめる */
+    top: auto;
+    left: auto;
+    transform: none;
+
+    margin: 140px auto 80px; /* 上に余白（HONOKA分） */
+    width: 92vw;
+    max-height: none;
+    overflow: visible;
+  }
+
+}
