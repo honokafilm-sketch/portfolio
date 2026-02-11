@@ -303,7 +303,7 @@ body::before{
     "Cormorant Garamond",
     "Times New Roman",
     serif;
-  font-size: min(35vw, 420px);
+  font-size: min(22vw, 220px);
   letter-spacing: 0.45em;
   font-weight: 500;
   color: rgba(255,255,255,0.95);
