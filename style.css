@@ -305,7 +305,7 @@ opacity: 0;
     "Times New Roman",
     serif;
 }
-  font-size: clamp(40px, 40vw, 40px);
+  font-size: clamp(48px, 7vw, 92px);
   letter-spacing: 0.45em;
   font-weight: 500;
   color: rgba(255,255,255,0.9);
@@ -317,4 +317,20 @@ opacity: 0;
     "Noto Sans JP",
     system-ui,
     sans-serif;
+}
+/* スマホ：WORKS枠をスクロール可能にする */
+@media (max-width: 520px){
+  .works{
+    top: 16vh;                 /* 上に少し余白（HONOKA分） */
+    transform: translateX(-50%); /* 縦の中央寄せはやめる */
+    max-height: calc(100vh - 20vh);
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    padding-bottom: 24px;
+  }
+
+  .works__grid{
+    grid-template-columns: repeat(2, 1fr); /* 2列に */
+    gap: 12px;
+  }
 }
