@@ -303,7 +303,6 @@ body::before{
     "Cormorant Garamond",
     "Times New Roman",
     serif;
-}
   font-size: min(80vw, 900px);
   letter-spacing: 0.45em;
   font-weight: 500;
@@ -311,6 +310,7 @@ body::before{
   text-shadow:
   0 10px 30px rgba(0,0,0,0.65),
   0 2px 0 rgba(255,255,255,0.15);
+}
   font-family:
     "Helvetica Neue",
     "Avenir",
