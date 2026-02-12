@@ -99,7 +99,15 @@
   modal.addEventListener("click", e => {
     if (e.target.dataset.close !== undefined) closeModal();
   });
+<script>
+const btn = document.getElementById("menuBtn");
+const menu = document.getElementById("sideMenu");
+
+btn.addEventListener("click", () => {
+  menu.classList.toggle("open");
+});
 </script>
+
 
 
 </body>
