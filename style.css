@@ -247,9 +247,9 @@ body::before{
 
   .works__grid{ grid-template-columns: repeat(2, 1fr); }
 }
-
 @media (max-width: 520px){
-  
+
+  /* ページは縦スクロールOK */
   html, body{
     height: auto;
     overflow-y: auto;
@@ -257,23 +257,48 @@ body::before{
     -webkit-overflow-scrolling: touch;
   }
 
-  /* スマホは固定をやめる＝ズレにくい */
+  /* 背景：黒→薄のグラデ（上下余白が出ても綺麗） */
+  html, body{
+    background: linear-gradient(180deg,
+      rgba(0,0,0,0.95) 0%,
+      rgba(0,0,0,0.65) 35%,
+      rgba(0,0,0,0.15) 100%);
+  }
+
+  /* 背景動画：見切れ防止（上下に余白が出る） */
+  video{
+    object-fit: contain;
+    background: #000;
+  }
+
+  /* 暗幕：グラデ寄り */
+  body::before{
+    background: linear-gradient(180deg,
+      rgba(0,0,0,0.75) 0%,
+      rgba(0,0,0,0.25) 45%,
+      rgba(0,0,0,0.15) 100%);
+  }
+
+  /* Heroは固定をやめて、上に置く */
   .hero{
     position: relative;
     left: auto;
     top: auto;
     transform: none;
-    margin: 24px auto 12px;
+    margin: 18px auto 10px;
     width: 92vw;
+    pointer-events: none;
   }
 
-  /* スマホでHONOKAが左切れしないように */
-  .hero__title{
-    font-size: clamp(54px, 16vw, 96px);
-    letter-spacing: 0.12em;
-    white-space: normal;
+  /* もしロゴ画像を使ってるならサイズ調整 */
+  .hero__logo{
+    width: 220px;     /* カード1枚ぶん目安 */
+    max-width: 60vw;
+    height: auto;
+    opacity: 0.95;
   }
 
+  /* Worksも固定解除 */
   .works{
     position: relative;
     left: auto;
@@ -281,93 +306,36 @@ body::before{
     transform: none;
     width: 92vw;
     margin: 0 auto 80px;
+
+    overflow: hidden;        /* ←縦スクロールとの干渉を減らす */
   }
 
-   /* スマホ：横1列 + スワイプで横スクロール */
+  /* 横スワイプ専用レーン（flexで安定） */
   .works__grid{
-    display: grid;
-    grid-auto-flow: column;              /* 横に流す */
-    grid-auto-columns: 78vw;             /* 1枚の幅（調整OK） */
+    display: flex;
     gap: 12px;
 
-    overflow-x: auto;                    /* 横スクロールON */
+    overflow-x: auto;
     overflow-y: hidden;
+
     padding: 6px 6px 14px;
-    scroll-snap-type: x mandatory;       /* ピタッと止まる */
-    -webkit-overflow-scrolling: touch;   /* iPhone慣性 */
-  }
 
-  /* 1枚ずつ “画面外から来る” 感 */
-  .workCard{
-    scroll-snap-align: start;            /* スナップ位置 */
-  }
-
-  /* スクロールバー非表示（iOS/Chrome） */
-  @media (max-width: 520px){
- html, body{
-    background: linear-gradient(180deg,
-      rgba(0,0,0,0.95) 0%,
-      rgba(0,0,0,0.65) 35%,
-      rgba(0,0,0,0.15) 100%);
-  }
-
-  video{
-    top: calc(env(safe-area-inset-top) + 140px); /* ←下げ幅 */
-    height: calc(100vh - (env(safe-area-inset-top) + 140px));
-    width: 100vw;
-    object-fit: cover;
-  }
-
-  /* 暗幕もグラデ寄りに（任意） */
-  body::before{
-    background: linear-gradient(180deg,
-      rgba(0,0,0,0.75) 0%,
-      rgba(0,0,0,0.25) 45%,
-      rgba(0,0,0,0.15) 100%);
-  }
-  /* 横スワイプ：gridじゃなくflexにする（Safari安定） */
-  .works__grid{
-    display: flex !important;
-    gap: 12px !important;
-
-    overflow-x: auto !important;
-    overflow-y: hidden !important;
-
-    padding: 6px 6px 14px !important;
-    -webkit-overflow-scrolling: touch;
     scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+
+    touch-action: pan-x;     /* ←縦スクロールと連動しにくくする */
   }
-}
-  /* 全カードを同じ幅に固定 → 左2つが小さくならない */
+
   .workCard{
-    flex: 0 0 78vw;              /* ここでカード幅調整 */
+    flex: 0 0 78vw;          /* ここでカード幅（小さくならない） */
     scroll-snap-align: start;
   }
 
-  /* ついでにスクロールバー非表示（iOS/Chrome） */
-  .works__grid::-webkit-scrollbar{ display: none; }
-}
+  .works__grid::-webkit-scrollbar{
+    display: none;
+  }
 
-
-  /* カードを少しだけ小さくして圧迫減 */
   .workCard__title{
     font-size: 11px;
   }
-
-  /* ===== 背景動画を全体表示（見切れ防止） ===== */
-  video{
-    object-fit: contain;
-    background: black;
-  }
-
-  /* ===== 上下をグラデーションに ===== */
-  body::before{
-    background:
-      linear-gradient(
-        to bottom,
-        rgba(0,0,0,0.65) 0%,
-        rgba(0,0,0,0.25) 35%,
-        rgba(0,0,0,0.25) 65%,
-        rgba(0,0,0,0.65) 100%
-      );
-  }
+}
