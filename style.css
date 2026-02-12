@@ -1,13 +1,18 @@
-*{ box-sizing: border-box; }
+/* =========================================================
+   HONOKA Portfolio - Renew (stable center / clean responsive)
+   ========================================================= */
 
+*{ box-sizing: border-box; }
 html, body{
-  background: #ffffff;
   margin: 0;
   width: 100%;
   height: 100%;
+  background: #fff;
+  overflow: hidden; /* PCは固定レイアウト前提 */
+  font-family: system-ui, -apple-system, "Hiragino Sans", "Noto Sans JP", sans-serif;
 }
 
-/* ===== Background video ===== */
+/* ===== Background Video ===== */
 video{
   position: fixed;
   inset: 0;
@@ -16,27 +21,58 @@ video{
   object-fit: cover;
   z-index: 0;
 }
-/* ===== Hero Title (HONOKA) ===== */
-.hero{
+
+/* overlay（暗幕） */
+body::before{
+  content:"";
   position: fixed;
-  left: 50%;
-  top: 12%;
-  transform: translateX(-50%);
-  z-index: 3;
+  inset: 0;
+  background: rgba(0,0,0,0.25);
+  z-index: 1;
+  pointer-events: none;
+}
+
+/* ===== Layout Wrapper（センター安定のため flex） ===== */
+.stage{
+  position: fixed;
+  inset: 0;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 18px;
+  padding: 24px 18px;
+  pointer-events: none; /* クリックはカード側だけで受ける */
+}
+
+/* ===== HERO（ロゴ or テキスト） ===== */
+.hero{
   pointer-events: none;
   text-align: center;
+  display: flex;
+  justify-content: center;
   width: min(920px, calc(100vw - 64px));
-
   opacity: 0;
   animation: heroFadeIn 1.2s ease-out forwards;
-  animation-delay: 2s;
+  animation-delay: 0.4s;
 }
 
 @keyframes heroFadeIn{
-  from{ opacity: 0; transform: translateX(-50%) translateY(8px); }
-  to{ opacity: 1; transform: translateX(-50%) translateY(0); }
+  from{ opacity: 0; transform: translateY(8px); }
+  to{ opacity: 1; transform: translateY(0); }
 }
 
+/* ロゴ画像を使う場合 */
+.hero__logo{
+  display: block;
+  height: 120px;     /* PCの基準サイズ */
+  width: auto;
+  max-width: 70vw;
+  margin: 0 auto;
+}
+
+/* 文字（使うなら） ※letter-spacingでズレるので対策込み */
 .hero__title{
   font-family: "Cormorant Garamond","Times New Roman",serif;
   font-size: clamp(72px, 10vw, 180px);
@@ -46,20 +82,18 @@ video{
   text-shadow: 0 10px 30px rgba(0,0,0,0.65);
   line-height: 1;
   white-space: nowrap;
+
+  /* ★見た目センター補正（トラッキング分） */
+  transform: translateX(0.08em);
 }
 
 /* ===== Works ===== */
 .works{
-  position: fixed;
-  left: 50%;
-  top: 50%;
-  transform: translate(-50%, -50%);
-  z-index: 2;
   width: min(920px, calc(100vw - 64px));
+  pointer-events: auto; /* ここからクリックOK */
 }
 
 .works__label{
-  font-family: system-ui, -apple-system, "Hiragino Sans", "Noto Sans JP", sans-serif;
   color: rgba(255,255,255,0.85);
   font-size: 14px;
   letter-spacing: .12em;
@@ -116,7 +150,6 @@ video{
 .workCard__meta{ margin-top: 10px; }
 
 .workCard__title{
-  font-family: system-ui, -apple-system, "Hiragino Sans", "Noto Sans JP", sans-serif;
   font-size: 12px;
   line-height: 1.35;
   color: rgba(255,255,255,0.85);
@@ -179,7 +212,7 @@ video{
 
 .noScroll{ overflow: hidden; }
 
-/* ===== Hamburger & Menu ===== */
+/* ===== Hamburger ===== */
 .menuBtn{
   position: fixed;
   top: calc(env(safe-area-inset-top) + 18px);
@@ -229,103 +262,82 @@ video{
 
 .sideMenu.open{ right: 0; }
 
-/* ===== Responsive ===== */
+/* ===== Tablet ===== */
 @media (max-width: 900px){
-  .works{
-    width: min(680px, calc(100vw - 40px));
-    margin: 10px auto 80px;
-  }
+  .works{ width: min(680px, calc(100vw - 40px)); }
   .works__grid{ grid-template-columns: repeat(2, 1fr); }
+  .hero{ width: min(680px, calc(100vw - 40px)); }
+  .hero__logo{ height: 96px; }
 }
 
+/* ===== Mobile ===== */
 @media (max-width: 520px){
 
-  /* ページは縦スクロールOK */
   html, body{
     height: auto;
-    overflow-y: auto;
+    overflow-y: auto;   /* ★スマホは縦スクロールOK */
     overflow-x: hidden;
     -webkit-overflow-scrolling: touch;
 
-    /* 背景：上下余白が出ても綺麗なグラデ */
+    /* 背景グラデ */
     background: linear-gradient(180deg,
       rgba(0,0,0,0.95) 0%,
       rgba(0,0,0,0.65) 35%,
       rgba(0,0,0,0.15) 100%);
   }
 
-  /* 背景動画：見切れ防止（上下に余白が出る） */
   video{
-    object-fit: contain;
-    background: transparent; /* 背景はhtml/bodyが担当 */
+    object-fit: contain;     /* 見切れ防止 */
+    background: transparent;
   }
 
-  /* 暗幕：上だけ少し濃く（任意） */
   body::before{
-    content:"";
-    position: fixed;
-    inset: 0;
-    z-index: 1;
-    pointer-events: none;
     background: linear-gradient(180deg,
       rgba(0,0,0,0.45) 0%,
       rgba(0,0,0,0.18) 45%,
       rgba(0,0,0,0.10) 100%);
   }
 
-  /* Heroは固定をやめて上に */
+  /* fixed中心レイアウトを解除して自然配置 */
+  .stage{
+    position: relative;
+    inset: auto;
+    padding: 18px 14px 70px;
+    justify-content: flex-start;
+  }
+
   .hero{
-    position: relative;
-    left: auto;
-    top: auto;
-    transform: none;
-    margin: 18px auto 10px;
     width: 92vw;
-    pointer-events: none;
+    margin-top: 6px;
   }
 
-  /* ロゴ画像サイズ（カード1枚ぶん目安） */
+  /* ★ロゴはカード1枚分くらい */
   .hero__logo{
-    width: min(220px, 60vw);
-    height: auto;
-    opacity: 0.95;
-    display: block;
-    margin: 0 auto;
+    height: 72px;
+    max-width: 72vw;
   }
 
-  /* Worksも固定解除 */
   .works{
-    position: relative;
-    left: auto;
-    top: auto;
-    transform: none;
     width: 92vw;
-    margin: 0 auto 80px;
-    overflow: hidden; /* 縦スクロール干渉を軽減 */
   }
 
-  /* 横スワイプ（flexで安定） */
+  /* 横スワイプレーン（縦スクロールと干渉しにくい） */
   .works__grid{
     display: flex;
     gap: 12px;
-
     overflow-x: auto;
     overflow-y: hidden;
-
     padding: 6px 6px 14px;
-
     scroll-snap-type: x mandatory;
     -webkit-overflow-scrolling: touch;
-
-    touch-action: pan-x; /* 縦スクロール連動しにくく */
+    touch-action: pan-x;
   }
 
   .workCard{
-    flex: 0 0 78vw;          /* カード幅固定（左が小さくならない） */
+    flex: 0 0 78vw;
     scroll-snap-align: start;
   }
 
   .works__grid::-webkit-scrollbar{ display: none; }
-
   .workCard__title{ font-size: 11px; }
 }
