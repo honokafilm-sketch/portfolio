@@ -1,3 +1,5 @@
+*{ box-sizing: border-box; }
+
 html, body{
   margin: 0;
   width: 100%;
@@ -39,13 +41,15 @@ body::before{
   animation: heroFadeIn 1.2s ease-out forwards;
   animation-delay: 2s;
 }
+
 @keyframes heroFadeIn{
   from{ opacity: 0; transform: translateX(-50%) translateY(8px); }
   to{ opacity: 1; transform: translateX(-50%) translateY(0); }
 }
+
 .hero__title{
   font-family: "Cormorant Garamond","Times New Roman",serif;
-  font-size: clamp(72px, 10vw, 180px); /* サイズ調整ここ */
+  font-size: clamp(72px, 10vw, 180px);
   letter-spacing: 0.16em;
   font-weight: 500;
   color: rgba(255,255,255,0.95);
@@ -54,11 +58,11 @@ body::before{
   white-space: nowrap;
 }
 
-/* ===== Works UI ===== */
+/* ===== Works ===== */
 .works{
   position: fixed;
   left: 50%;
-  top: 55%;
+  top: 50%;
   transform: translate(-50%, -50%);
   z-index: 2;
   width: min(920px, calc(100vw - 64px));
@@ -79,7 +83,7 @@ body::before{
   gap: 16px;
 }
 
-/* card button */
+/* cards */
 .workCard{
   all: unset;
   cursor: pointer;
@@ -101,7 +105,6 @@ body::before{
   height: 100%;
   object-fit: cover;
   display: block;
-  filter: saturate(1.02) contrast(1.02);
 }
 
 .workCard__play{
@@ -176,6 +179,7 @@ body::before{
   background: rgba(0,0,0,0.65);
   box-shadow: 0 24px 70px rgba(0,0,0,0.65);
 }
+
 .modal__frame iframe{
   width: 100%;
   height: 100%;
@@ -185,30 +189,29 @@ body::before{
 
 .noScroll{ overflow: hidden; }
 
-/* ===== Hamburger Button ===== */
+/* ===== Hamburger & Menu ===== */
 .menuBtn{
   position: fixed;
-  top: 24px;
-  right: 24px;
+  top: calc(env(safe-area-inset-top) + 18px);
+  right: calc(env(safe-area-inset-right) + 18px);
   width: 32px;
   height: 22px;
   background: none;
   border: none;
-  z-index: 100;
+  z-index: 101;
   cursor: pointer;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
 }
+
 .menuBtn span{
   height: 2px;
   background: white;
   width: 100%;
   display: block;
-  transition: 0.3s ease;
 }
 
-/* ===== Side Menu ===== */
 .sideMenu{
   position: fixed;
   top: 0;
@@ -223,33 +226,18 @@ body::before{
   gap: 24px;
   padding-left: 40px;
   transition: right 0.4s ease;
-  z-index: 99;
+  z-index: 100;
 }
+
 .sideMenu a{
   color: white;
   text-decoration: none;
-  font-size: 18px;
-  letter-spacing: 0.1em;
+  font-size: 22px;
+  letter-spacing: 0.08em;
+  font-family: "Cormorant Garamond","Times New Roman",serif;
 }
-.sideMenu.open{ right: 0; }
 
-/* ===== About Page ===== */
-.pageTitle{
-  text-align: center;
-  margin-top: 120px;
-  color: white;
-  font-size: 48px;
-  position: relative;
-  z-index: 2;
-}
-.aboutSection{
-  width: min(800px, 90vw);
-  margin: 60px auto;
-  color: white;
-  line-height: 1.8;
-  position: relative;
-  z-index: 2;
-}
+.sideMenu.open{ right: 0; }
 
 /* ===== Responsive ===== */
 @media (max-width: 900px){
@@ -265,13 +253,21 @@ body::before{
     -webkit-overflow-scrolling: touch;
   }
 
+  /* スマホは固定をやめる＝ズレにくい */
   .hero{
     position: relative;
     left: auto;
     top: auto;
     transform: none;
-    margin: 22px auto 10px;
+    margin: 24px auto 12px;
     width: 92vw;
+  }
+
+  /* スマホでHONOKAが左切れしないように */
+  .hero__title{
+    font-size: clamp(54px, 16vw, 96px);
+    letter-spacing: 0.12em;
+    white-space: normal;
   }
 
   .works{
