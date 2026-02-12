@@ -27,28 +27,19 @@
     <a href="contact.html">Contact</a>
   </nav>
 
-  <!-- Hero Title -->
- <!-- Hero Logo -->
-<div class="hero">
-  <img src="logo.png" alt="HONOKA logo" class="hero__logo">
-</div>
+  <!-- Hero Logo -->
+  <div class="hero">
+    <img src="logo.png" alt="HONOKA logo" class="hero__logo">
+  </div>
 
   <!-- Works thumbs -->
   <div class="works">
     <div class="works__label">WORKS</div>
     <div class="works__grid" id="worksGrid"></div>
   </div>
-<!-- Works thumbs -->
-<div class="works">
-  <div class="works__label">WORKS</div>
-  <div class="works__grid" id="worksGrid"></div>
-</div>
 
-<!-- ★ ここに追加する -->
-<div class="siteTitle">HONOKA</div>
-
-<!-- Modal -->
-<div class="modal" id="playerModal" aria-hidden="true">
+  <!-- ★ カードの下の小さいHONOKA -->
+  <div class="siteTitle">HONOKA</div>
 
   <!-- Modal -->
   <div class="modal" id="playerModal" aria-hidden="true">
@@ -58,82 +49,81 @@
       <div class="modal__frame" id="playerFrame"></div>
     </div>
   </div>
-<script>
-  const WORKS = [
-    { id: "VoSRpIq9qv8" },
-    { id: "uQQxOeu6gHI" },
-    { id: "LFGNmOdYubg" },
-    { id: "sOj1vXpvZwA" },
-    { id: "9jJOygCUbsE", start: 8 },
-    { id: "XKOw60Hr_hw" },
-    { id: "n8CYxe93iMA" },
-    { id: "kMRS5hkl6WE" },
-  ];
 
-  const grid = document.getElementById("worksGrid");
-  const modal = document.getElementById("playerModal");
-  const frame = document.getElementById("playerFrame");
+  <script>
+    const WORKS = [
+      { id: "VoSRpIq9qv8" },
+      { id: "uQQxOeu6gHI" },
+      { id: "LFGNmOdYubg" },
+      { id: "sOj1vXpvZwA" },
+      { id: "9jJOygCUbsE", start: 8 },
+      { id: "XKOw60Hr_hw" },
+      { id: "n8CYxe93iMA" },
+      { id: "kMRS5hkl6WE" },
+    ];
 
-  function openModal(videoId, startSeconds = 0) {
-    const startParam = startSeconds ? `&start=${startSeconds}` : "";
-    frame.innerHTML = `
-      <iframe
-        src="https://www.youtube-nocookie.com/embed/${videoId}?autoplay=1&rel=0${startParam}"
-        allow="autoplay; encrypted-media; picture-in-picture"
-        allowfullscreen></iframe>
-    `;
-    modal.classList.add("isOpen");
-    document.body.classList.add("noScroll");
-  }
+    const grid = document.getElementById("worksGrid");
+    const modal = document.getElementById("playerModal");
+    const frame = document.getElementById("playerFrame");
 
-  function closeModal() {
-    modal.classList.remove("isOpen");
-    frame.innerHTML = "";
-    document.body.classList.remove("noScroll");
-  }
-
-  async function fetchTitle(videoId) {
-    try {
-      const res = await fetch(
-        `https://www.youtube.com/oembed?url=https://www.youtube.com/watch?v=${videoId}&format=json`
-      );
-      const data = await res.json();
-      return data.title;
-    } catch {
-      return "YouTube Video";
+    function openModal(videoId, startSeconds = 0) {
+      const startParam = startSeconds ? `&start=${startSeconds}` : "";
+      frame.innerHTML = `
+        <iframe
+          src="https://www.youtube-nocookie.com/embed/${videoId}?autoplay=1&rel=0${startParam}"
+          allow="autoplay; encrypted-media; picture-in-picture"
+          allowfullscreen></iframe>
+      `;
+      modal.classList.add("isOpen");
+      document.body.classList.add("noScroll");
     }
-  }
 
-  WORKS.forEach(async (w) => {
-    const btn = document.createElement("button");
-    btn.className = "workCard";
-    btn.innerHTML = `
-      <div class="workCard__media">
-        <img src="https://i.ytimg.com/vi/${w.id}/hqdefault.jpg" alt="">
-        <div class="workCard__play">▶</div>
-      </div>
-      <div class="workCard__meta">
-        <div class="workCard__title" id="t-${w.id}">Loading...</div>
-      </div>
-    `;
-    btn.onclick = () => openModal(w.id, w.start || 0);
-    grid.appendChild(btn);
+    function closeModal() {
+      modal.classList.remove("isOpen");
+      frame.innerHTML = "";
+      document.body.classList.remove("noScroll");
+    }
 
-    const title = await fetchTitle(w.id);
-    document.getElementById(`t-${w.id}`).textContent = title;
-  });
+    async function fetchTitle(videoId) {
+      try {
+        const res = await fetch(
+          `https://www.youtube.com/oembed?url=https://www.youtube.com/watch?v=${videoId}&format=json`
+        );
+        const data = await res.json();
+        return data.title;
+      } catch {
+        return "YouTube Video";
+      }
+    }
 
-  modal.addEventListener("click", e => {
-    if (e.target.dataset.close !== undefined) closeModal();
-  });
+    WORKS.forEach(async (w) => {
+      const btn = document.createElement("button");
+      btn.className = "workCard";
+      btn.innerHTML = `
+        <div class="workCard__media">
+          <img src="https://i.ytimg.com/vi/${w.id}/hqdefault.jpg" alt="">
+          <div class="workCard__play">▶</div>
+        </div>
+        <div class="workCard__meta">
+          <div class="workCard__title" id="t-${w.id}">Loading...</div>
+        </div>
+      `;
+      btn.onclick = () => openModal(w.id, w.start || 0);
+      grid.appendChild(btn);
 
-  // menu toggle
-  const btnMenu = document.getElementById("menuBtn");
-  const menu = document.getElementById("sideMenu");
+      const title = await fetchTitle(w.id);
+      document.getElementById(`t-${w.id}`).textContent = title;
+    });
 
-  btnMenu.addEventListener("click", () => {
-    menu.classList.toggle("open");
-  });
-</script>
+    modal.addEventListener("click", e => {
+      if (e.target.dataset.close !== undefined) closeModal();
+    });
+
+    // menu toggle
+    const btnMenu = document.getElementById("menuBtn");
+    const menu = document.getElementById("sideMenu");
+    btnMenu.addEventListener("click", () => menu.classList.toggle("open"));
+  </script>
+
 </body>
 </html>
