@@ -241,7 +241,10 @@ body::before{
 
 /* ===== Responsive ===== */
 @media (max-width: 900px){
-  .works{ width: min(680px, calc(100vw - 40px)); }
+    .works{
+    margin: 10px auto 80px; /* ←上の余白を少しだけ足す */
+  }
+
   .works__grid{ grid-template-columns: repeat(2, 1fr); }
 }
 
@@ -280,10 +283,35 @@ body::before{
     margin: 0 auto 80px;
   }
 
+   /* スマホ：横1列 + スワイプで横スクロール */
   .works__grid{
-    grid-template-columns: repeat(2, 1fr);
-    gap: 10px;
+    display: grid;
+    grid-auto-flow: column;              /* 横に流す */
+    grid-auto-columns: 78vw;             /* 1枚の幅（調整OK） */
+    gap: 12px;
+
+    overflow-x: auto;                    /* 横スクロールON */
+    overflow-y: hidden;
+    padding: 6px 6px 14px;
+    scroll-snap-type: x mandatory;       /* ピタッと止まる */
+    -webkit-overflow-scrolling: touch;   /* iPhone慣性 */
   }
+
+  /* 1枚ずつ “画面外から来る” 感 */
+  .workCard{
+    scroll-snap-align: start;            /* スナップ位置 */
+  }
+
+  /* スクロールバー非表示（iOS/Chrome） */
+  .works__grid::-webkit-scrollbar{
+    display: none;
+  }
+
+  /* カードを少しだけ小さくして圧迫減 */
+  .workCard__title{
+    font-size: 11px;
+  }
+
   /* ===== 背景動画を全体表示（見切れ防止） ===== */
   video{
     object-fit: contain;
