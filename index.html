@@ -8,6 +8,7 @@
 </head>
 <body>
 
+  <!-- Background video -->
   <video autoplay muted loop playsinline>
     <source src="bg.mp4" type="video/mp4">
   </video>
@@ -20,26 +21,30 @@
   </button>
 
   <!-- Slide Menu -->
-  <nav class="sideMenu" id="sideMenu">
+  <nav class="sideMenu" id="sideMenu" aria-label="site menu">
     <a href="index.html">Works</a>
     <a href="about.html">About</a>
     <a href="works.html">All Works</a>
     <a href="contact.html">Contact</a>
   </nav>
 
-  <!-- Hero Logo -->
-  <div class="hero">
-    <img src="logo.png" alt="HONOKA logo" class="hero__logo">
-  </div>
+  <!-- ★ stageで包む（CSSのリニューアル設計に合わせる） -->
+  <div class="stage">
 
-  <!-- Works thumbs -->
-  <div class="works">
-    <div class="works__label">WORKS</div>
-    <div class="works__grid" id="worksGrid"></div>
-  </div>
+    <!-- Hero Logo -->
+    <div class="hero">
+      <img src="logo.png" alt="HONOKA logo" class="hero__logo">
+      <!-- 文字版を使うなら↓（今は画像ロゴでOK） -->
+      <!-- <div class="hero__title">HONOKA</div> -->
+    </div>
 
-  <!-- ★ カードの下の小さいHONOKA -->
-  <div class="siteTitle">HONOKA</div>
+    <!-- Works -->
+    <div class="works">
+      <div class="works__label">WORKS</div>
+      <div class="works__grid" id="worksGrid"></div>
+    </div>
+
+  </div>
 
   <!-- Modal -->
   <div class="modal" id="playerModal" aria-hidden="true">
@@ -108,14 +113,15 @@
           <div class="workCard__title" id="t-${w.id}">Loading...</div>
         </div>
       `;
-      btn.onclick = () => openModal(w.id, w.start || 0);
+      btn.addEventListener("click", () => openModal(w.id, w.start || 0));
       grid.appendChild(btn);
 
       const title = await fetchTitle(w.id);
-      document.getElementById(`t-${w.id}`).textContent = title;
+      const el = document.getElementById(`t-${w.id}`);
+      if (el) el.textContent = title;
     });
 
-    modal.addEventListener("click", e => {
+    modal.addEventListener("click", (e) => {
       if (e.target.dataset.close !== undefined) closeModal();
     });
 
