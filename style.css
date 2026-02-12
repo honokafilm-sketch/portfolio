@@ -1,6 +1,7 @@
 *{ box-sizing: border-box; }
 
 html, body{
+  background: #ffffff;
   margin: 0;
   width: 100%;
   height: 100%;
@@ -15,17 +16,6 @@ video{
   object-fit: cover;
   z-index: 0;
 }
-
-/* うっすら暗幕（任意） */
-body::before{
-  content:"";
-  position: fixed;
-  inset: 0;
-  background: rgba(0,0,0,0.25);
-  z-index: 1;
-  pointer-events: none;
-}
-
 /* ===== Hero Title (HONOKA) ===== */
 .hero{
   position: fixed;
@@ -241,12 +231,13 @@ body::before{
 
 /* ===== Responsive ===== */
 @media (max-width: 900px){
-    .works{
-    margin: 10px auto 80px; /* ←上の余白を少しだけ足す */
+  .works{
+    width: min(680px, calc(100vw - 40px));
+    margin: 10px auto 80px;
   }
-
   .works__grid{ grid-template-columns: repeat(2, 1fr); }
 }
+
 @media (max-width: 520px){
 
   /* ページは縦スクロールOK */
@@ -255,10 +246,8 @@ body::before{
     overflow-y: auto;
     overflow-x: hidden;
     -webkit-overflow-scrolling: touch;
-  }
 
-  /* 背景：黒→薄のグラデ（上下余白が出ても綺麗） */
-  html, body{
+    /* 背景：上下余白が出ても綺麗なグラデ */
     background: linear-gradient(180deg,
       rgba(0,0,0,0.95) 0%,
       rgba(0,0,0,0.65) 35%,
@@ -268,18 +257,23 @@ body::before{
   /* 背景動画：見切れ防止（上下に余白が出る） */
   video{
     object-fit: contain;
-    background: #000;
+    background: transparent; /* 背景はhtml/bodyが担当 */
   }
 
-  /* 暗幕：グラデ寄り */
+  /* 暗幕：上だけ少し濃く（任意） */
   body::before{
+    content:"";
+    position: fixed;
+    inset: 0;
+    z-index: 1;
+    pointer-events: none;
     background: linear-gradient(180deg,
-      rgba(0,0,0,0.75) 0%,
-      rgba(0,0,0,0.25) 45%,
-      rgba(0,0,0,0.15) 100%);
+      rgba(0,0,0,0.45) 0%,
+      rgba(0,0,0,0.18) 45%,
+      rgba(0,0,0,0.10) 100%);
   }
 
-  /* Heroは固定をやめて、上に置く */
+  /* Heroは固定をやめて上に */
   .hero{
     position: relative;
     left: auto;
@@ -290,12 +284,13 @@ body::before{
     pointer-events: none;
   }
 
-  /* もしロゴ画像を使ってるならサイズ調整 */
+  /* ロゴ画像サイズ（カード1枚ぶん目安） */
   .hero__logo{
-    width: 220px;     /* カード1枚ぶん目安 */
-    max-width: 60vw;
+    width: min(220px, 60vw);
     height: auto;
     opacity: 0.95;
+    display: block;
+    margin: 0 auto;
   }
 
   /* Worksも固定解除 */
@@ -306,11 +301,10 @@ body::before{
     transform: none;
     width: 92vw;
     margin: 0 auto 80px;
-
-    overflow: hidden;        /* ←縦スクロールとの干渉を減らす */
+    overflow: hidden; /* 縦スクロール干渉を軽減 */
   }
 
-  /* 横スワイプ専用レーン（flexで安定） */
+  /* 横スワイプ（flexで安定） */
   .works__grid{
     display: flex;
     gap: 12px;
@@ -323,19 +317,15 @@ body::before{
     scroll-snap-type: x mandatory;
     -webkit-overflow-scrolling: touch;
 
-    touch-action: pan-x;     /* ←縦スクロールと連動しにくくする */
+    touch-action: pan-x; /* 縦スクロール連動しにくく */
   }
 
   .workCard{
-    flex: 0 0 78vw;          /* ここでカード幅（小さくならない） */
+    flex: 0 0 78vw;          /* カード幅固定（左が小さくならない） */
     scroll-snap-align: start;
   }
 
-  .works__grid::-webkit-scrollbar{
-    display: none;
-  }
+  .works__grid::-webkit-scrollbar{ display: none; }
 
-  .workCard__title{
-    font-size: 11px;
-  }
+  .workCard__title{ font-size: 11px; }
 }
