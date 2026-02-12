@@ -246,6 +246,7 @@ body::before{
 }
 
 @media (max-width: 520px){
+  
   html, body{
     height: auto;
     overflow-y: auto;
@@ -283,4 +284,20 @@ body::before{
     grid-template-columns: repeat(2, 1fr);
     gap: 10px;
   }
-}
+  /* ===== 背景動画を全体表示（見切れ防止） ===== */
+  video{
+    object-fit: contain;
+    background: black;
+  }
+
+  /* ===== 上下をグラデーションに ===== */
+  body::before{
+    background:
+      linear-gradient(
+        to bottom,
+        rgba(0,0,0,0.65) 0%,
+        rgba(0,0,0,0.25) 35%,
+        rgba(0,0,0,0.25) 65%,
+        rgba(0,0,0,0.65) 100%
+      );
+  }
