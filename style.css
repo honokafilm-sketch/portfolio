@@ -303,9 +303,51 @@ body::before{
   }
 
   /* スクロールバー非表示（iOS/Chrome） */
-  .works__grid::-webkit-scrollbar{
-    display: none;
+  @media (max-width: 520px){
+ html, body{
+    background: linear-gradient(180deg,
+      rgba(0,0,0,0.95) 0%,
+      rgba(0,0,0,0.65) 35%,
+      rgba(0,0,0,0.15) 100%);
   }
+
+  video{
+    top: calc(env(safe-area-inset-top) + 140px); /* ←下げ幅 */
+    height: calc(100vh - (env(safe-area-inset-top) + 140px));
+    width: 100vw;
+    object-fit: cover;
+  }
+
+  /* 暗幕もグラデ寄りに（任意） */
+  body::before{
+    background: linear-gradient(180deg,
+      rgba(0,0,0,0.75) 0%,
+      rgba(0,0,0,0.25) 45%,
+      rgba(0,0,0,0.15) 100%);
+  }
+  /* 横スワイプ：gridじゃなくflexにする（Safari安定） */
+  .works__grid{
+    display: flex !important;
+    gap: 12px !important;
+
+    overflow-x: auto !important;
+    overflow-y: hidden !important;
+
+    padding: 6px 6px 14px !important;
+    -webkit-overflow-scrolling: touch;
+    scroll-snap-type: x mandatory;
+  }
+}
+  /* 全カードを同じ幅に固定 → 左2つが小さくならない */
+  .workCard{
+    flex: 0 0 78vw;              /* ここでカード幅調整 */
+    scroll-snap-align: start;
+  }
+
+  /* ついでにスクロールバー非表示（iOS/Chrome） */
+  .works__grid::-webkit-scrollbar{ display: none; }
+}
+
 
   /* カードを少しだけ小さくして圧迫減 */
   .workCard__title{
