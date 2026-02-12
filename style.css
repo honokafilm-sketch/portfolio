@@ -274,14 +274,14 @@ body::before{
 
 /* Worksは前面 */
 .works{ z-index: 2; }
-/* ===== Hero Title (HONOKA text only) ===== */
+
+/* ===== Hero Title (HONOKA) ===== */
 .hero{
- position: relative !important;
-    left: auto !important;
-    top: auto !important;
-    transform: none !important;
-    margin: 24px auto 10px !important;
-  z-index: 2;
+  position: fixed;
+  left: 50%;
+  top: 12%;
+  transform: translateX(-50%);
+  z-index: 3;
   pointer-events: none;
   text-align: center;
   width: min(920px, calc(100vw - 64px));
@@ -290,54 +290,26 @@ body::before{
   animation: heroFadeIn 1.2s ease-out forwards;
   animation-delay: 2s;
 }
+
 @keyframes heroFadeIn{
-  from{
-    opacity: 0;
-    transform: translate(-50%, -8px);
-  }
-  to{
-    opacity: 1;
-    transform: translate(-50%, 0);
-  }
+  from{ opacity: 0; transform: translateX(-50%) translateY(8px); }
+  to{ opacity: 1; transform: translateX(-50%) translateY(0); }
 }
+
 .hero__title{
-  font-family:
-    "Cormorant Garamond",
-    "Times New Roman",
-    serif;
-  font-size: clamp(84px, 12vw, 210px);
+  font-family: "Cormorant Garamond","Times New Roman",serif;
+  font-size: clamp(72px, 10vw, 180px);  /* ←ここでサイズ調整 */
   letter-spacing: 0.16em;
   font-weight: 500;
   color: rgba(255,255,255,0.95);
-  text-shadow:
-  0 10px 30px rgba(0,0,0,0.65),
-  0 2px 0 rgba(255,255,255,0.15);
+  text-shadow: 0 10px 30px rgba(0,0,0,0.65);
   line-height: 1;
   white-space: nowrap;
-  transform: translateX(-0.08em);
-
-/* スマホ：WORKS枠をスクロール可能にする */
-@media (max-width: 520px){
-
-  .works{
-    position: relative;   /* ← fixedやめる */
-    top: auto;
-    left: auto;
-    transform: none;
-
-    width: 92vw;
-    margin: 120px auto 80px;
-  }
-
-  body{
-    overflow-y: auto;
-  }
-
 }
-/* ===== Mobile fix : allow scroll of works ===== */
+/* ===== Mobile: 2 columns + scroll ===== */
 @media (max-width: 520px){
 
-  /* ページ全体はスクロール可能に */
+  /* ページ全体スクロールOK */
   html, body{
     height: auto !important;
     overflow-y: auto !important;
@@ -345,22 +317,30 @@ body::before{
     -webkit-overflow-scrolling: touch;
   }
 
-  /* WORKSを固定解除 */
+  /* Heroは上に置いて固定をやめる（スクロールの邪魔を防ぐ） */
+  .hero{
+    position: relative !important;
+    left: auto !important;
+    top: auto !important;
+    transform: none !important;
+    margin: 22px auto 10px !important;
+    width: 92vw !important;
+  }
+
+  /* Worksはfixedをやめて普通に流す */
   .works{
     position: relative !important;
     left: auto !important;
     top: auto !important;
     transform: none !important;
 
-    width: min(92vw, 520px) !important;
-    margin: 140px auto 80px !important; /* 上に余白（HONOKA分） */
-    max-height: none !important;
-    overflow: visible !important;
+    width: 92vw !important;
+    margin: 0 auto 80px !important;
   }
 
-.works__grid{
+  /* 2列表示 */
+  .works__grid{
     grid-template-columns: repeat(2, 1fr) !important;
     gap: 10px !important;
   }
-
 }
