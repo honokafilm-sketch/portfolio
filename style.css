@@ -4,8 +4,8 @@ html, body{
   margin: 0;
   width: 100%;
   height: 100%;
-  background: #ffffff;      /* ←常に白（グラデ禁止） */
-  overflow: hidden;         /* PCは固定レイアウト */
+  background: #ffffff;      /* 常に白（グラデ禁止） */
+  overflow: hidden;         /* PCは固定レイアウト（※横スクロールはworksレーン側で許可） */
   font-family: system-ui, -apple-system, "Hiragino Sans", "Noto Sans JP", sans-serif;
 }
 
@@ -15,12 +15,12 @@ video{
   inset: 0;
   width: 100vw;
   height: 100vh;
-  object-fit: cover;        /* PCは迫力 */
+  object-fit: cover;
   z-index: 0;
   background: #ffffff;      /* 余白が出ても白 */
 }
 
-/* うっすら暗幕（白文字の視認性UP。不要なら透明に） */
+/* うっすら暗幕（白文字の視認性UP） */
 body::before{
   content:"";
   position: fixed;
@@ -44,7 +44,6 @@ body::before{
   padding-bottom: 6px;
 }
 
-/* 文字 */
 .topNav a{
   text-decoration: none;
   font-family: "Cormorant Garamond","Times New Roman",serif;
@@ -52,10 +51,12 @@ body::before{
   letter-spacing: .08em;
   color: #ffffff;
   font-weight: 400;
-  position: relative;
 }
 
-/* nav全体に1本線 */
+/* nav全体に1本線（単語ごとに切れない） */
+.topNav{
+  position: fixed;
+}
 .topNav::after{
   content:"";
   position:absolute;
@@ -64,7 +65,7 @@ body::before{
   width:100%;
   height:1px;
   background:#ffffff;
-  opacity:0.8;
+  opacity:0.85;
 }
 .topNav:hover::after{ opacity:1; }
 
@@ -72,12 +73,14 @@ body::before{
 .stage{
   position: relative;
   z-index: 2;
-  width: min(1180px, calc(100vw - 80px)); /* ←横スクロール化に合わせて少し広げる */
+  width: min(1180px, calc(100vw - 80px));
   margin: 0 auto;
   height: 100vh;
+
   display: grid;
   grid-template-rows: auto 1fr;
   align-items: start;
+
   padding-top: 64px;
   padding-bottom: 24px;
 }
@@ -85,11 +88,15 @@ body::before{
 /* ===== Hero (Logo) ===== */
 .hero{
   display: flex;
-  justify-content: center;   /* ←ズレ防止 */
+  justify-content: center;
   align-items: center;
   pointer-events: none;
   margin-top: 10px;
   margin-bottom: 22px;
+
+  /* どんな状況でも前面に */
+  position: relative;
+  z-index: 3;
 }
 
 .hero__logo{
@@ -99,6 +106,12 @@ body::before{
   height: auto;
   filter: drop-shadow(0 14px 34px rgba(0,0,0,0.45));
 }
+
+/* もしロゴが黒くて暗い背景で消える場合はここをON
+.hero__logo{
+  filter: brightness(0) invert(1) drop-shadow(0 14px 34px rgba(0,0,0,0.55));
+}
+*/
 
 /* ===== Works ===== */
 .works{ width: 100%; }
@@ -113,7 +126,10 @@ body::before{
     0 2px 6px rgba(0,0,0,0.35);
 }
 
-/* ===== PC：2段のまま横スクロール（カード大きめ） ===== */
+/* ===== PC：横スクロールレーン（1段） =====
+   重要：html/bodyはoverflow hiddenのまま。
+   このレーンだけ overflow-x を許可して横スクロールさせる。
+*/
 .works__grid{
   display: flex;
   gap: 22px;
@@ -126,17 +142,27 @@ body::before{
   scroll-snap-type: x mandatory;
   -webkit-overflow-scrolling: touch;
 
-  scrollbar-width: thin;
+  /* 横スクロールを邪魔しにくく */
+  touch-action: pan-x;
 }
 
-/* カードサイズ */
+/* カード */
 .workCard{
   all: unset;
   cursor: pointer;
   display: block;
 
-  flex: 0 0 420px;      /* ←カード横幅 */
+  flex: 0 0 420px;          /* カード幅（ここで大きさ調整） */
   scroll-snap-align: start;
+
+  /* hover拡大のため */
+  transform: translateZ(0);
+  transition: transform 180ms ease;
+}
+
+/* “カーソルが合ってるカード”を少し拡大（カード全体） */
+.workCard:hover{
+  transform: scale(1.04);
 }
 
 .workCard__media{
@@ -146,7 +172,12 @@ body::before{
   border-radius: 12px;
   background: rgba(0,0,0,0.18);
   box-shadow: 0 18px 46px rgba(0,0,0,0.38);
-  transition: transform 160ms ease, box-shadow 160ms ease;
+  transition: box-shadow 180ms ease;
+}
+
+/* hover時、影も少し強く */
+.workCard:hover .workCard__media{
+  box-shadow: 0 26px 74px rgba(0,0,0,0.52);
 }
 
 .workCard__media img{
@@ -184,11 +215,6 @@ body::before{
     0 2px 6px rgba(0,0,0,0.35);
 }
 
-.workCard:hover .workCard__media{
-  transform: translateY(-2px);
-  box-shadow: 0 24px 64px rgba(0,0,0,0.48);
-}
-
 /* 横スクロールバー（控えめ） */
 .works__grid::-webkit-scrollbar{ height: 10px; }
 .works__grid::-webkit-scrollbar-thumb{
@@ -208,7 +234,7 @@ body::before{
   position: fixed;
   inset: 0;
   background: rgba(0,0,0,0.6);
-  z-index: 10;
+  z-index: 200;
 }
 
 .modal__panel{
@@ -217,7 +243,7 @@ body::before{
   top: 50%;
   transform: translate(-50%, -50%);
   width: min(920px, calc(100vw - 40px));
-  z-index: 11;
+  z-index: 201;
 }
 
 .modal__close{
@@ -262,23 +288,15 @@ body::before{
     padding-top: 56px;
   }
 
-  /* 900px以下は “縦グリッド” に戻す（見やすさ優先） */
-  .works__grid{
-    grid-auto-flow: initial;
-    grid-template-rows: initial;
-    grid-auto-columns: initial;
-
-    grid-template-columns: repeat(2, 1fr);
-    gap: 18px;
-    overflow: visible;
-  }
-
   .topNav{
     top: 18px;
     right: 18px;
     gap: 18px;
   }
   .topNav a{ font-size: 18px; }
+
+  /* 900以下も横レーンは維持（カード少し小さめ） */
+  .workCard{ flex-basis: 360px; }
 }
 
 /* ===== Mobile ===== */
@@ -291,7 +309,6 @@ body::before{
     background: #ffffff;
   }
 
-  /* スマホ：背景動画は見切れ防止（余白白） */
   video{
     object-fit: contain;
     background: #ffffff;
@@ -312,7 +329,6 @@ body::before{
     width: min(220px, 62vw);
   }
 
-  /* ナビが見切れないよう縮める */
   .topNav{
     top: calc(env(safe-area-inset-top) + 12px);
     right: calc(env(safe-area-inset-right) + 12px);
@@ -323,23 +339,15 @@ body::before{
     letter-spacing: .08em;
   }
 
-  /* スマホ：カードは横スワイプ（1段） */
   .works__grid{
-    display: flex;
     gap: 12px;
-
-    overflow-x: auto;
-    overflow-y: hidden;
-
     padding: 6px 6px 14px;
-    scroll-snap-type: x mandatory;
-    -webkit-overflow-scrolling: touch;
-    touch-action: pan-x;
   }
+
   .workCard{
     flex: 0 0 78vw;
-    scroll-snap-align: start;
   }
+
   .works__grid::-webkit-scrollbar{ display: none; }
   .workCard__title{ font-size: 11px; }
 }
