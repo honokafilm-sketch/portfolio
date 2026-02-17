@@ -15,9 +15,9 @@ video{
   inset: 0;
   width: 100vw;
   height: 100vh;
-  object-fit: cover;    /* PCは迫力優先 */
+  object-fit: cover;   /* PCは迫力優先 */
   z-index: 0;
-  background: #ffffff;  /* 余白が出ても白 */
+  background: #ffffff; /* 余白が出ても白 */
 }
 
 /* うっすら暗幕（必要なければ透明でOK） */
@@ -28,6 +28,44 @@ body::before{
   background: rgba(0,0,0,0.18);
   z-index: 1;
   pointer-events: none;
+}
+
+/* ===== Top Nav（右上） ===== */
+.topNav{
+  position: fixed;
+  top: 22px;
+  right: 26px;
+  z-index: 60;
+
+  display: flex;
+  align-items: center;
+  gap: 18px;
+
+  padding: 10px 14px;
+  border-radius: 999px;
+  background: rgba(0,0,0,0.22);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255,255,255,0.16);
+}
+
+.topNav a{
+  color: rgba(255,255,255,0.92);
+  text-decoration: none;
+  font-family: "Cormorant Garamond","Times New Roman",serif;
+  font-size: 18px;
+  letter-spacing: .10em;
+  line-height: 1;
+  white-space: nowrap;
+  opacity: .92;
+}
+
+.topNav a:hover{ opacity: 1; }
+
+.topNav a[aria-current="page"]{
+  opacity: 1;
+  text-decoration: underline;
+  text-underline-offset: 6px;
+  text-decoration-thickness: 1px;
 }
 
 /* ===== stage（ロゴ＋works） ===== */
@@ -41,34 +79,30 @@ body::before{
   grid-template-rows: auto 1fr;
   align-items: start;
   padding-top: 56px;
-  padding-bottom: 94px; /* 下ナビ分 */
+  padding-bottom: 30px; /* ←下ナビ撤去したので軽く */
 }
 
 /* ===== Hero (Logo) ===== */
 .hero{
   display: flex;
-  justify-content: center; /* ←左右ズレ防止の本命 */
+  justify-content: center; /* ←左右ズレ防止 */
   align-items: center;
   pointer-events: none;
   margin-top: 6px;
   margin-bottom: 18px;
-
-  /* アニメで消えないよう「透明から復帰」をやめる */
   opacity: 1;
 }
 
 .hero__logo{
   display: block;
-  width: 240px;      /* PCはほどよく */
+  width: 240px;
   max-width: 70vw;
   height: auto;
   filter: drop-shadow(0 10px 30px rgba(0,0,0,0.35));
 }
 
 /* ===== Works ===== */
-.works{
-  width: 100%;
-}
+.works{ width: 100%; }
 
 .works__label{
   color: rgba(255,255,255,0.9);
@@ -189,46 +223,8 @@ body::before{
 
 .noScroll{ overflow: hidden; }
 
-/* ===== Bottom Nav（ハンバーガー廃止） ===== */
-.bottomNav{
-  position: fixed;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  z-index: 50;
-
-  padding: 14px 16px calc(env(safe-area-inset-bottom) + 14px);
-  display: flex;
-  justify-content: center;
-
-  /* 動画の上でも読めるように */
-  background: rgba(255,255,255,0.0);
-  pointer-events: none;
-}
-
-.bottomNav__inner{
-  pointer-events: auto;
-  display: flex;
-  flex-wrap: wrap;          /* ←スマホは自動で折り返す */
-  justify-content: center;
-  gap: 14px 22px;
-
-  padding: 10px 16px;
-  border-radius: 999px;
-  background: rgba(0,0,0,0.25);
-  backdrop-filter: blur(10px);
-  border: 1px solid rgba(255,255,255,0.16);
-}
-
-.bottomNav a{
-  color: rgba(255,255,255,0.92);
-  text-decoration: none;
-  font-family: "Cormorant Garamond","Times New Roman",serif;
-  font-size: 18px;
-  letter-spacing: .10em;
-  line-height: 1;
-  white-space: nowrap;
-}
+/* ===== Bottom Nav（旧：PCは使わないので非表示） ===== */
+.bottomNav{ display: none !important; }
 
 /* ===== Responsive ===== */
 @media (max-width: 900px){
@@ -237,27 +233,29 @@ body::before{
     padding-top: 48px;
   }
   .works__grid{ grid-template-columns: repeat(2, 1fr); }
+
+  .topNav{
+    top: 18px;
+    right: 18px;
+  }
+  .topNav a{ font-size: 17px; }
 }
 
-/* スマホ */
+/* ここからスマホは「後で」仕上げる前提で、PCに影響しない範囲だけ残す */
 @media (max-width: 520px){
   html, body{
     height: auto;
     overflow-y: auto;
     overflow-x: hidden;
     -webkit-overflow-scrolling: touch;
+    background: #ffffff;
   }
 
-  /* 背景は白。グラデ禁止 */
-  html, body{ background: #ffffff; }
-
-  /* スマホ：背景動画は見切れ防止で全体表示（余白は白） */
   video{
     object-fit: contain;
     background: #ffffff;
   }
 
-  /* 暗幕も薄め */
   body::before{
     background: rgba(0,0,0,0.10);
   }
@@ -265,48 +263,40 @@ body::before{
   .stage{
     height: auto;
     padding-top: 28px;
-    padding-bottom: 110px; /* 下ナビ分 */
+    padding-bottom: 40px;
   }
 
-  /* ロゴが出ない問題対策：確実に見えるサイズ＋中央固定 */
   .hero{
     margin: 8px auto 14px;
   }
   .hero__logo{
-    width: min(220px, 62vw); /* カード1枚感 */
+    width: min(220px, 62vw);
   }
 
-  /* スマホ：横スワイプ（縦スクロールと干渉しにくい） */
+  /* スマホの右上ナビ：小さくして折り返さない */
+  .topNav{
+    top: calc(env(safe-area-inset-top) + 12px);
+    right: calc(env(safe-area-inset-right) + 12px);
+    gap: 14px;
+    padding: 9px 12px;
+  }
+  .topNav a{ font-size: 16px; }
+
+  /* スマホ：横スワイプ（後で詰める） */
   .works__grid{
     display: flex;
     gap: 12px;
-
     overflow-x: auto;
     overflow-y: hidden;
-
     padding: 6px 6px 14px;
-
     scroll-snap-type: x mandatory;
     -webkit-overflow-scrolling: touch;
     touch-action: pan-x;
   }
-
   .workCard{
     flex: 0 0 78vw;
     scroll-snap-align: start;
   }
-
   .works__grid::-webkit-scrollbar{ display: none; }
   .workCard__title{ font-size: 11px; }
-
-  /* 下ナビ：小さめ＆折り返しで見切れ防止 */
-  .bottomNav__inner{
-    border-radius: 18px;
-    padding: 10px 14px;
-    gap: 10px 18px;
-    max-width: calc(100vw - 20px);
-  }
-  .bottomNav a{
-    font-size: 16px;
-  }
 }
