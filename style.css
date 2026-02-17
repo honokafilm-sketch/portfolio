@@ -115,27 +115,27 @@ body::before{
 
 /* ===== PC：2段のまま横スクロール（カード大きめ） ===== */
 .works__grid{
-  display: grid;
-  grid-auto-flow: column;              /* 横に流す */
-  grid-template-rows: repeat(2, auto); /* 2行固定 */
-  grid-auto-columns: 360px;            /* ←カード幅（ここだけでサイズ調整） */
-  gap: 18px 18px;
+  display: flex;
+  gap: 22px;
 
   overflow-x: auto;
   overflow-y: hidden;
 
-  padding: 6px 6px 16px;
+  padding: 6px 6px 20px;
+
   scroll-snap-type: x mandatory;
   -webkit-overflow-scrolling: touch;
 
-  scrollbar-width: thin;               /* Firefox */
+  scrollbar-width: thin;
 }
 
-/* cards */
+/* カードサイズ */
 .workCard{
   all: unset;
   cursor: pointer;
   display: block;
+
+  flex: 0 0 420px;      /* ←カード横幅 */
   scroll-snap-align: start;
 }
 
